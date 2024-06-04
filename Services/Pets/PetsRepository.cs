@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using pruebaDesempeno.Data;
 using pruebaDesempeno.Models;
 using pruebaDesempeno.DTOs;
+using System.Net;
 
 namespace pruebaDesempeno.Services.Pets
 {
@@ -12,11 +13,11 @@ namespace pruebaDesempeno.Services.Pets
         {
             _context = context;
         }
-        public async Task<(Pet pet, string message)> Add(PetDTO pet)
+        public async Task<(Pet pet, string message, HttpStatusCode statusCode)> Add(PetDTO pet)
         {
             if (pet.Name == null || pet.Specie == null || pet.Race == null || pet.DateBirth == null || pet.Photo == null || !pet.OwnerId.HasValue)
             {
-                return (null, "All fields are required.");
+                return (null, "All fields are required.", HttpStatusCode.BadRequest);
             }            
             var newPet = new Pet
             {
@@ -29,33 +30,33 @@ namespace pruebaDesempeno.Services.Pets
             };
             await _context.Pets.AddAsync(newPet);
             await _context.SaveChangesAsync();
-            return (newPet, "Pet created correctly");
+            return (newPet, "Pet created correctly", HttpStatusCode.Created);
         }
 
-        public async Task<(IEnumerable<Pet> pets, string message)> GetAll()
+        public async Task<(IEnumerable<Pet> pets, string message, HttpStatusCode statusCode)> GetAll()
         {
             var pets = await _context.Pets.Include(p => p.Owner).ToListAsync();
             if (pets.Any())
-                return (pets, "Pets successfully obtained");
+                return (pets, "Pets successfully obtained", HttpStatusCode.OK);
             else
-                return (null, "Pets not found!");
+                return (null, "Pets not found!", HttpStatusCode.NotFound);
         }
 
-        public async Task<(Pet pet, string message)> GetById(int id)
+        public async Task<(Pet pet, string message, HttpStatusCode statusCode)> GetById(int id)
         {
             var pet = await _context.Pets.Include(p => p.Owner).FirstOrDefaultAsync(p => p.Id == id);
             if (pet != null)
-                return (pet, "Pet successfully obtained");
+                return (pet, "Pet successfully obtained", HttpStatusCode.OK);
             else
-                return (null, $"Pet not found with ID {id}!");
+                return (null, $"Pet not found with ID {id}!", HttpStatusCode.NotFound);
         }
 
-        public async Task<(Pet pet, string message)> Update(int id, PetDTO petUpdate)
+        public async Task<(Pet pet, string message, HttpStatusCode statusCode)> Update(int id, PetDTO petUpdate)
         {
             var pet = await _context.Pets.FindAsync(id);
             if (pet == null)
             {
-                return (null, "Pet not found!");
+                return (null, "Pet not found!", HttpStatusCode.NotFound);
             }
 
             // Actualiza los campos necesarios solo si no son nulos
@@ -86,7 +87,7 @@ namespace pruebaDesempeno.Services.Pets
 
             _context.Entry(pet).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return (pet, "Pet updated correctly");
+            return (pet, "Pet updated correctly", HttpStatusCode.OK);
         }
     }
 }

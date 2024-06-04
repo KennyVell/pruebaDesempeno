@@ -20,7 +20,7 @@ namespace pruebaDesempeno.Controllers.Pets
         {
             try
             {
-                var (result,message) = await _repository.GetAll();
+                var (result,message,statusCode) = await _repository.GetAll();
                 if(result == null)
                 {
                     return NotFound(message);
@@ -29,7 +29,7 @@ namespace pruebaDesempeno.Controllers.Pets
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining pets: {ex.Message}");
             }
         }
 
@@ -40,7 +40,7 @@ namespace pruebaDesempeno.Controllers.Pets
         {
             try
             {
-                var (result,message) = await _repository.GetById(id);
+                var (result,message,statusCode) = await _repository.GetById(id);
                 if(result == null)
                 {
                     return NotFound(message);
@@ -49,7 +49,7 @@ namespace pruebaDesempeno.Controllers.Pets
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining the pet: {ex.Message}");
             }
         }
 
