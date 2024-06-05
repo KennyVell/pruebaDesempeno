@@ -17,7 +17,7 @@ namespace pruebaDesempeno.Controllers.Owners
 
         [HttpPut]
         [Route("api/owners/{id}")]
-        public async Task<IActionResult> UpdateCita(int id, [FromBody] OwnerDTO owner)
+        public async Task<IActionResult> Update(int id, [FromBody] OwnerDTO owner)
         {
             /* if (!ModelState.IsValid)
             {

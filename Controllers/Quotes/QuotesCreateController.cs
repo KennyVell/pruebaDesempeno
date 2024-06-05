@@ -17,7 +17,7 @@ namespace pruebaDesempeno.Controllers.Quotes
 
         [HttpPost]
         [Route("api/quotes")]
-        public async Task<IActionResult> AddCita([FromBody] QuoteDTO quote)
+        public async Task<IActionResult> Add([FromBody] QuoteDTO quote)
         {
             if (!ModelState.IsValid)
             {
