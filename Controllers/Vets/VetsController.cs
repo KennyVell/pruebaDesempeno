@@ -1,20 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
-using pruebaDesempeno.Services.Pets;
+using pruebaDesempeno.Services.Vets;
 
-namespace pruebaDesempeno.Controllers.Pets
+namespace pruebaDesempeno.Controllers.Vets
 {
     /* [ApiController]
     [Route("api/[controller]")] */
-    public class PetsController : ControllerBase
+    public class VetsController : ControllerBase
     {
-        private readonly IPetsRepository _repository;
-        public PetsController(IPetsRepository repository)
+        private readonly IVetsRepository _repository;
+        public VetsController(IVetsRepository repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        [Route("api/pets")]
+        [Route("api/vets")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -28,13 +28,13 @@ namespace pruebaDesempeno.Controllers.Pets
             }
             catch(Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining pets: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining veterinarians: {ex.Message}");
             }
         }
 
 
         [HttpGet]
-        [Route("api/pets/{id}")]
+        [Route("api/vets/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -48,7 +48,7 @@ namespace pruebaDesempeno.Controllers.Pets
             }
             catch(Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining the pet: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining the veterinarians: {ex.Message}");
             }
         }
 

@@ -26,7 +26,7 @@ namespace pruebaDesempeno.Services.Pets
                 Race = pet.Race,
                 DateBirth = pet.DateBirth,
                 Photo = pet.Photo,
-                OwnerId = pet.OwnerId
+                OwnerId = pet.OwnerId.Value
             };
             await _context.Pets.AddAsync(newPet);
             await _context.SaveChangesAsync();
@@ -59,7 +59,7 @@ namespace pruebaDesempeno.Services.Pets
                 return (null, "Pet not found!", HttpStatusCode.NotFound);
             }
 
-            // Actualiza los campos necesarios solo si no son nulos
+            // Update required fields only if not null
             if (!string.IsNullOrEmpty(petUpdate.Name))
             {
                 pet.Name = petUpdate.Name;

@@ -1,20 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
-using pruebaDesempeno.Services.Pets;
+using pruebaDesempeno.Services.Quotes;
 
-namespace pruebaDesempeno.Controllers.Pets
+namespace pruebaDesempeno.Controllers.Quotes
 {
     /* [ApiController]
     [Route("api/[controller]")] */
-    public class PetsController : ControllerBase
+    public class QuotesController : ControllerBase
     {
-        private readonly IPetsRepository _repository;
-        public PetsController(IPetsRepository repository)
+        private readonly IQuotesRepository _repository;
+        public QuotesController(IQuotesRepository repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        [Route("api/pets")]
+        [Route("api/quotes")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -28,13 +28,13 @@ namespace pruebaDesempeno.Controllers.Pets
             }
             catch(Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining pets: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining quotes: {ex.Message}");
             }
         }
 
 
         [HttpGet]
-        [Route("api/pets/{id}")]
+        [Route("api/quotes/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -48,7 +48,7 @@ namespace pruebaDesempeno.Controllers.Pets
             }
             catch(Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining the pet: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error obtaining the quote: {ex.Message}");
             }
         }
 
