@@ -16,7 +16,7 @@ namespace pruebaDesempeno.Controllers.Quotes
         }
 
         [HttpPut]
-        [Route("api/quotes/update/{id}")]
+        [Route("api/quotes/{id}")]
         public async Task<IActionResult> UpdateCita(int id, [FromBody] QuoteDTO quote)
         {
             /* if (!ModelState.IsValid)

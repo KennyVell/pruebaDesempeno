@@ -51,6 +51,27 @@ namespace pruebaDesempeno.Services.Pets
                 return (null, $"Pet not found with ID {id}!", HttpStatusCode.NotFound);
         }
 
+        public async Task<(IEnumerable<Pet> pets, string message, HttpStatusCode statusCode)> GetByOwnerId(int id)
+        {
+            // get pets by its owner id
+            var pets = await _context.Pets.Where(p => p.OwnerId == id).Include(p => p.Owner).ToListAsync();
+            if (pets.Any())
+                return (pets, "Pets successfully obtained", HttpStatusCode.OK);
+            else
+                return (null, $"Pets not found with owner ID {id}!", HttpStatusCode.NotFound);
+        }
+
+        public async Task<(IEnumerable<Pet> pets, string message, HttpStatusCode statusCode)> GetByBirthDate(DateTime birthDate)
+        {
+            var pet = await _context.Pets.Where(q => q.DateBirth.Value == birthDate).Include(p => p.Owner).ToListAsync();
+            if (pet == null || pet.Count == 0)
+            {
+                return (null, $"Pets not found with birth date {birthDate}!", HttpStatusCode.NotFound);
+            }
+
+            return (pet, "Pets successfully obtained", HttpStatusCode.OK);
+        }
+
         public async Task<(Pet pet, string message, HttpStatusCode statusCode)> Update(int id, PetDTO petUpdate)
         {
             var pet = await _context.Pets.FindAsync(id);

@@ -43,7 +43,7 @@ namespace pruebaDesempeno.Services.Owners
 
         public async Task<(Owner owner, string message, HttpStatusCode statusCode)> GetById(int id)
         {
-            var owner = await _context.Owners.FirstOrDefaultAsync(p => p.Id == id);
+            var owner = await _context.Owners.FirstOrDefaultAsync(o => o.Id == id);
             if (owner != null)
                 return (owner, "Owner successfully obtained", HttpStatusCode.OK);
             else

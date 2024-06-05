@@ -46,7 +46,7 @@ namespace pruebaDesempeno.Services.Vets
 
         public async Task<(Vet vet, string message, HttpStatusCode statusCode)> GetById(int id)
         {
-            var vet = await _context.Vets.FirstOrDefaultAsync(p => p.Id == id);
+            var vet = await _context.Vets.FirstOrDefaultAsync(v => v.Id == id);
             if (vet != null)
                 return (vet, "Veterinary successfully obtained", HttpStatusCode.OK);
             else

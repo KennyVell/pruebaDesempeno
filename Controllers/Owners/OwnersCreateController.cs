@@ -16,7 +16,7 @@ namespace pruebaDesempeno.Controllers.Owners
         }
 
         [HttpPost]
-        [Route("api/owners/create")]
+        [Route("api/owners")]
         public async Task<IActionResult> AddCita([FromBody] OwnerDTO owner)
         {
             if (!ModelState.IsValid)

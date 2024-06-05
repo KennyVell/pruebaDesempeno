@@ -42,11 +42,35 @@ namespace pruebaDesempeno.Services.Quotes
 
         public async Task<(Quote quote, string message, HttpStatusCode statusCode)> GetById(int id)
         {
-            var quote = await _context.Quotes.Include(q => q.Vet).Include(q => q.Pet.Owner).FirstOrDefaultAsync(p => p.Id == id);
+            var quote = await _context.Quotes.Include(q => q.Vet).Include(q => q.Pet.Owner).FirstOrDefaultAsync(o => o.Id == id);
             if (quote != null)
                 return (quote, "Quote successfully obtained", HttpStatusCode.OK);
             else
                 return (null, $"Quote not found with ID {id}!", HttpStatusCode.NotFound);
+        }
+
+        public async Task<(IEnumerable<Quote> quotes, string message, HttpStatusCode statusCode)> GetByDate(DateTime date)
+        {
+            // Get quotes by its date
+            var quote = await _context.Quotes.Where(q => q.Date.Value == date).Include(q => q.Vet).Include(q => q.Pet.Owner).ToListAsync();
+            if (quote == null || quote.Count == 0)
+            {
+                return (null, $"Quotes not found with date {date}!", HttpStatusCode.NotFound);
+            }
+
+            return (quote, "Quotes successfully obtained", HttpStatusCode.OK);
+        }
+
+        public async Task<(IEnumerable<Quote> quotes, string message, HttpStatusCode statusCode)> GetByVetId(int id)
+        {
+            // Get quotes by its vet id
+            var quote = await _context.Quotes.Where(q => q.VetId == id).Include(q => q.Vet).Include(q => q.Pet.Owner).ToListAsync();
+            if (quote == null)
+            {
+                return (null, $"Quotes not found with veterinary id {id}!", HttpStatusCode.NotFound);
+            }
+
+            return (quote, "Quotes successfully obtained", HttpStatusCode.OK);
         }
 
         public async Task<(Quote quote, string message, HttpStatusCode statusCode)> Update(int id, QuoteDTO quoteUpdate)

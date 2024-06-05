@@ -16,7 +16,7 @@ namespace pruebaDesempeno.Controllers.Pets
         }
 
         [HttpPut]
-        [Route("api/pets/update/{id}")]
+        [Route("api/pets/{id}")]
         public async Task<IActionResult> UpdateCita(int id, [FromBody] PetDTO pet)
         {
             /* if (!ModelState.IsValid)
