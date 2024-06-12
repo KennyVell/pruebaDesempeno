@@ -3,6 +3,9 @@ using pruebaDesempeno.Data;
 using pruebaDesempeno.Services.Pets;
 using pruebaDesempeno.Extensions;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using pruebaDesempeno.Services.MailerSend;
+using MailerSend.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,10 @@ builder.Services.AddControllers();
 
 //scopes
 builder.Services.AddRepositories(Assembly.GetExecutingAssembly());
+
+//MailerSend
+builder.Services.AddHttpClient<IEmailSender, EmailSender>();
+builder.Services.Configure<MailerSendOptions>(builder.Configuration.GetSection("MailerSend"));
 
 var app = builder.Build();
 
