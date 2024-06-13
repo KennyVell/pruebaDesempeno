@@ -1,8 +1,9 @@
+using pruebaDesempeno.Models;
 
 namespace pruebaDesempeno.Services.MailerSend
 {
     public interface IEmailSender
     {
-        Task<string> SendEmail(string info, string toEmail);
+        Task<string> SendEmail(Quote quote, string toEmail);
     }
 }

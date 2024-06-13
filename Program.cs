@@ -28,6 +28,7 @@ builder.Services.AddControllers();
 builder.Services.AddRepositories(Assembly.GetExecutingAssembly());
 
 //MailerSend
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddHttpClient<IEmailSender, EmailSender>();
 builder.Services.Configure<MailerSendOptions>(builder.Configuration.GetSection("MailerSend"));
 

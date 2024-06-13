@@ -1,7 +1,10 @@
 using System.Net;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using pruebaDesempeno.DTOs;
 using pruebaDesempeno.Services.Quotes;
+using pruebaDesempeno.Services.MailerSend;
+
 
 namespace pruebaDesempeno.Controllers.Quotes
 {
@@ -10,14 +13,16 @@ namespace pruebaDesempeno.Controllers.Quotes
     public class QuotesCreateController : ControllerBase
     {
         private readonly IQuotesRepository _repository;
-        public QuotesCreateController(IQuotesRepository repository)
+        private readonly IEmailSender _mailRepository;
+        public QuotesCreateController(IQuotesRepository repository, IEmailSender emailRepository)
         {
             _repository = repository;
+            _mailRepository = emailRepository;
         }
 
         [HttpPost]
         [Route("api/quotes")]
-        public async Task<IActionResult> Add([FromBody] QuoteDTO quote)
+        public async Task<IActionResult> Add([FromBody]QuoteDTO quote)
         {
             if (!ModelState.IsValid)
             {
@@ -29,6 +34,7 @@ namespace pruebaDesempeno.Controllers.Quotes
                 var (result, message, statusCode) = await _repository.Add(quote);
                 if (statusCode == HttpStatusCode.Created)
                 {
+                    await _mailRepository.SendEmail(result, "kenneth.geme1@gmail.com");
                     return CreatedAtAction(nameof(QuotesController.GetById), "Quotes", new { id = result.Id }, result);
                 }
                 else

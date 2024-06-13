@@ -1,37 +1,32 @@
-/* using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using pruebaDesempeno.Models;
+using pruebaDesempeno.Services.MailerSend;
 
 namespace pruebaDesempeno.Controllers.Mail
 {
-    public class MailController
+    /* [ApiController]
+    [Route("api/[controller]")] */
+    public class MailController : ControllerBase
     {
-        public async void EnviarCorreo()
+        private readonly IEmailSender _repository;
+        public MailController(IEmailSender repository)
+        {
+            _repository = repository;
+        }
+
+        /* [HttpPost]
+        [Route("api/email/send")]
+        public async Task<IActionResult> SendEmail([FromBody]string toEmail)
         {
             try
             {
-                string url = "https://api.mailersend.com/v1/email";
-
-                string jwtToken = "mlsn.7572a9a042404d39892ce30e364b16a1831836f8bb067b3946e4757bc43fca19";
-
-                var emailMessage = new Email
-                {
-                    from = new From { email = "test@example.com"},
-                    to = new []
-                    {
-                        new To { email = "kenneth.geme1@gmail.com" }
-                    },
-                    subject = "Your pet need attention",
-                    text = "from the veterinary your pet need attention",
-                    html = "Your pet need attention"
-                };
-
-                string jsonBody = JsonSerializer.Serialize(emailMessage);
-
-                using (HttpClient client = new HttpClient())
-
+                await _repository.SendEmail(toEmail);
+                return Ok();
             }
-        }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error sending the email: {ex.Message}");
+            }
+        } */
     }
-} */
+}

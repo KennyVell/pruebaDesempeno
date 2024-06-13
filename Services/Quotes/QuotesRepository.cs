@@ -42,7 +42,7 @@ namespace pruebaDesempeno.Services.Quotes
 
         public async Task<(Quote quote, string message, HttpStatusCode statusCode)> GetById(int id)
         {
-            var quote = await _context.Quotes.Include(q => q.Vet).Include(q => q.Pet.Owner).FirstOrDefaultAsync(o => o.Id == id);
+            var quote = await _context.Quotes.Include(q => q.Vet).Include(q => q.Pet.Owner).FirstOrDefaultAsync(q => q.Id == id);
             if (quote != null)
                 return (quote, "Quote successfully obtained", HttpStatusCode.OK);
             else
